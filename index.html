@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comercio Electrónico en España | Fuentes Oficiales 2025</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            bg: '#F8F9FA',
+                            card: '#FFFFFF',
+                            dark: '#212529',
+                            muted: '#6C757D',
+                            sage: '#52796F',
+                            sageLight: '#84A98C',
+                            sagePale: '#E2ECE9',
+                            accent: '#354F52'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html {
+            scroll-padding-top: 6rem; /* Ensures section headers are fully visible below the fixed navbar */
+        }
+        body {
+            background-color: #F8F9FA;
+            color: #212529;
+            font-family: 'Inter', sans-serif;
+        }
+        .sage-gradient {
+            background: linear-gradient(135deg, #52796F 0%, #354F52 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(82, 121, 111, 0.15), 0 8px 10px -6px rgba(82, 121, 111, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-brand-bg text-brand-dark antialiased min-h-screen flex flex-col selection:bg-brand-sagePale selection:text-brand-accent">
+
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl sage-gradient flex items-center justify-center text-white shadow-md">
+                    <i class="fa-solid fa-chart-line text-lg"></i>
+                </div>
+                <div>
+                    <span class="font-bold text-base sm:text-lg tracking-tight block text-brand-dark">E-Commerce España</span>
+                    <span class="text-xs text-brand-muted font-medium">Fuentes: CNMC & ONTSI & Adigital/BCG</span>
+                </div>
+            </div>
+
+            <!-- Simplified Navigation Menu -->
+            <nav class="hidden lg:flex items-center space-x-6 text-sm font-medium">
+                <a href="#inicio" class="text-brand-sage hover:text-brand-accent transition-colors font-semibold">Inicio</a>
+                <a href="#que-es" class="text-brand-muted hover:text-brand-sage transition-colors">Qué es</a>
+                <a href="#cifras" class="text-brand-muted hover:text-brand-sage transition-colors">Cifras</a>
+                <a href="#habitos" class="text-brand-muted hover:text-brand-sage transition-colors">Hábitos</a>
+                <a href="#empresas" class="text-brand-muted hover:text-brand-sage transition-colors">Empresas</a>
+                <a href="#fuentes" class="text-brand-muted hover:text-brand-sage transition-colors">Fuentes</a>
+            </nav>
+
+            <!-- Navbar Right Actions (Search Icon & Mobile Toggle) -->
+            <div class="flex items-center space-x-3">
+                <!-- Expandable Search Toggle Button -->
+                <div class="relative">
+                    <button id="search-toggle-btn" onclick="toggleNavbarSearch()" class="p-2.5 rounded-xl bg-brand-bg text-brand-sage hover:bg-brand-sagePale transition-colors focus:outline-none" aria-label="Abrir buscador">
+                        <i class="fa-solid fa-magnifying-glass text-base"></i>
+                    </button>
+                    <!-- Expandable Search Box Container -->
+                    <div id="navbar-search-box" class="hidden absolute right-0 mt-2 w-72 sm:w-80 bg-white p-3 rounded-2xl border border-gray-200 shadow-xl z-30">
+                        <div class="relative flex items-center">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 text-brand-muted text-xs"></i>
+                            <input type="text" id="global-search" placeholder="Buscar conceptos (ej: smartphone, 29.4M)..." class="w-full pl-9 pr-3 py-2 rounded-xl border border-gray-200 bg-brand-bg focus:outline-none focus:ring-2 focus:ring-brand-sage text-xs">
+                        </div>
+                        <div id="search-results-box" class="hidden mt-2 bg-white p-2 rounded-xl border border-gray-100 text-left text-xs max-h-48 overflow-y-auto"></div>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg text-brand-dark hover:bg-gray-100 focus:outline-none" aria-label="Abrir menú">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Drawer -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-b border-gray-200 px-4 pt-2 pb-6 space-y-2 shadow-lg">
+            <a href="#inicio" class="block px-3 py-2 rounded-md text-base font-medium text-brand-sage bg-brand-sagePale/50">Inicio</a>
+            <a href="#que-es" class="block px-3 py-2 rounded-md text-base font-medium text-brand-muted hover:text-brand-dark hover:bg-gray-50">Qué es</a>
+            <a href="#cifras" class="block px-3 py-2 rounded-md text-base font-medium text-brand-muted hover:text-brand-dark hover:bg-gray-50">Cifras</a>
+            <a href="#habitos" class="block px-3 py-2 rounded-md text-base font-medium text-brand-muted hover:text-brand-dark hover:bg-gray-50">Hábitos</a>
+            <a href="#empresas" class="block px-3 py-2 rounded-md text-base font-medium text-brand-muted hover:text-brand-dark hover:bg-gray-50">Empresas</a>
+            <a href="#fuentes" class="block px-3 py-2 rounded-md text-base font-medium text-brand-muted hover:text-brand-dark hover:bg-gray-50">Fuentes</a>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <section id="inicio" class="relative py-14 lg:py-20 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+                <span class="inline-flex items-center space-x-2 bg-brand-sagePale text-brand-sage text-xs font-semibold px-3 py-1.5 rounded-full mb-6">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>Datos Oficiales: ONTSI (2025), CNMC y Adigital/BCG</span>
+                </span>
+                <h1 class="text-3xl sm:text-4xl lg:text-[2.75rem] font-bold tracking-tight text-brand-dark max-w-4xl mx-auto leading-[1.15]">
+                    Comercio electrónico en España
+                </h1>
+                <p class="mt-4 text-base sm:text-lg text-brand-muted max-w-2xl mx-auto leading-relaxed">
+                    Datos, hábitos de compra y evolución de la economía digital
+                </p>
+
+                <!-- Quick Stats Bar -->
+                <div class="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200/80 shadow-sm card-hover text-left">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-semibold uppercase tracking-wider text-brand-muted">Compradores Online</span>
+                            <div class="w-8 h-8 rounded-lg bg-brand-sagePale flex items-center justify-center text-brand-sage">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+                        </div>
+                        <div class="text-3xl font-bold text-brand-dark">29,4 mill.</div>
+                        <p class="text-xs text-brand-muted mt-1">El 83,3% de los internautas en España (ONTSI)</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200/80 shadow-sm card-hover text-left">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-semibold uppercase tracking-wider text-brand-muted">Gasto Medio Anual</span>
+                            <div class="w-8 h-8 rounded-lg bg-brand-sagePale flex items-center justify-center text-brand-sage">
+                                <i class="fa-solid fa-euro-sign"></i>
+                            </div>
+                        </div>
+                        <div class="text-3xl font-bold text-brand-dark">3.762 €</div>
+                        <p class="text-xs text-brand-muted mt-1">Incremento del 13,8% respecto al año anterior (ONTSI)</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200/80 shadow-sm card-hover text-left">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-semibold uppercase tracking-wider text-brand-muted">Economía Digitalizada</span>
+                            <div class="w-8 h-8 rounded-lg bg-brand-sagePale flex items-center justify-center text-brand-sage">
+                                <i class="fa-solid fa-chart-pie"></i>
+                            </div>
+                        </div>
+                        <div class="text-3xl font-bold text-brand-dark">26,0% del PIB</div>
+                        <p class="text-xs text-brand-muted mt-1">Impacto total de 414 mil millones de euros en 2024 (Adigital/BCG)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="que-es" class="py-16 bg-white border-y border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-3xl mx-auto text-center mb-12">
+                    <h2 class="text-3xl font-bold text-brand-dark">Qué es el Comercio Electrónico y su Contexto</h2>
+                    <p class="mt-3 text-brand-muted">Comprender las definiciones oficiales de la CNMC y la ONTSI adaptadas para todos los públicos.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+                    <div class="flex flex-col justify-between space-y-6">
+                        <div class="bg-brand-bg p-6 rounded-2xl border border-gray-200 flex-1 flex flex-col justify-center">
+                            <div class="flex items-start space-x-4">
+                                <div class="w-10 h-10 rounded-xl sage-gradient flex-shrink-0 flex items-center justify-center text-white mt-1">
+                                    <i class="fa-solid fa-book-open"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-lg text-brand-dark">Definición CNMC</h3>
+                                    <p class="mt-2 text-sm text-brand-muted leading-relaxed">
+                                        Según la CNMC, el comercio electrónico comprende toda compra realizada a través de Internet (orden de compraventa electrónica), utilizando tarjetas bancarias o transferencias inmediatas como Bizum.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-brand-bg p-6 rounded-2xl border border-gray-200 flex-1 flex flex-col justify-center">
+                            <div class="flex items-start space-x-4">
+                                <div class="w-10 h-10 rounded-xl sage-gradient flex-shrink-0 flex items-center justify-center text-white mt-1">
+                                    <i class="fa-solid fa-building-columns"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-lg text-brand-dark">Impacto en la Economía Digitalizada (Adigital/BCG)</h3>
+                                    <p class="mt-2 text-sm text-brand-muted leading-relaxed">
+                                        La economía digitalizada en España alcanzó el <strong>26,0% sobre el total del PIB en 2024</strong>, generando un impacto económico de <strong>414 mil millones de euros</strong> (un 17% más que en 2023).
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-brand-sagePale/30 p-8 rounded-3xl border border-brand-sage/20 flex flex-col justify-between h-full">
+                        <div>
+                            <h3 class="text-xl font-bold text-brand-dark mb-4">¿Quiénes compran en España? (ONTSI 2025)</h3>
+                            <ul class="space-y-4 text-sm text-brand-dark">
+                                <li class="flex items-start space-x-3">
+                                    <i class="fa-solid fa-circle-check text-brand-sage mt-1"></i>
+                                    <span><strong>2,6 millones de nuevos compradores y compradoras</strong> se incorporan este año (medio millón más que en 2023), con mayor presencia entre los jóvenes de 16 a 24 años.</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <i class="fa-solid fa-circle-check text-brand-sage mt-1"></i>
+                                    <span>El <strong>56,7% de la población</strong> compró online en los últimos tres meses según el informe de indicadores de comercio electrónico.</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <i class="fa-solid fa-circle-check text-brand-sage mt-1"></i>
+                                    <span>Persisten brechas por edad, estudios, ingresos y tamaño del hábitat, lo que requiere impulsar políticas de inclusión digital.</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-brand-sage/10 text-xs text-brand-muted italic">
+                            Fuente: Estudio oficial ONTSI (2025) y portal de Indicadores de Comercio Electrónico.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="cifras" class="py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-3xl mx-auto text-center mb-12">
+                    <h2 class="text-3xl font-bold text-brand-dark">Cifras Clave del Comercio B2C y B2B</h2>
+                    <p class="mt-3 text-brand-muted">Datos cuantitativos extraídos de los informes oficiales de la ONTSI y Adigital/BCG.</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+                        <div class="text-brand-sage text-2xl font-bold mb-2">110.683 M€</div>
+                        <h3 class="font-semibold text-brand-dark">Volumen de negocio B2C</h3>
+                        <p class="text-xs text-brand-muted mt-2">Un 11,5% más que en 2023, uno de los mayores aumentos de la última década (ONTSI).</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+                        <div class="text-brand-sage text-2xl font-bold mb-2">93,5%</div>
+                        <h3 class="font-semibold text-brand-dark">Percepción de Seguridad</h3>
+                        <p class="text-xs text-brand-muted mt-2">De quienes compran online, la gran mayoría considera seguro el proceso de compra (ONTSI).</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+                        <div class="text-brand-sage text-2xl font-bold mb-2">32,2%</div>
+                        <h3 class="font-semibold text-brand-dark">Empresas que venden online</h3>
+                        <p class="text-xs text-brand-muted mt-2">Muy por encima de la media de la UE27, situada en el 23,8% (ONTSI Indicadores).</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+                        <div class="text-brand-sage text-2xl font-bold mb-2">84%</div>
+                        <h3 class="font-semibold text-brand-dark">Servicios Públicos Digitales</h3>
+                        <p class="text-xs text-brand-muted mt-2">España ocupa el décimo puesto en Europa, superando la media de la UE (79%) según DESI.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="habitos" class="py-16 bg-white border-y border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-3xl mx-auto text-center mb-12">
+                    <h2 class="text-3xl font-bold text-brand-dark">Hábitos de Compra del Consumidor</h2>
+                    <p class="mt-3 text-brand-muted">Dispositivos preferidos, métodos de pago y productos estrella según la ONTSI (2025).</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Dispositivos -->
+                    <div class="bg-brand-bg p-6 rounded-2xl border border-gray-200">
+                        <div class="w-12 h-12 rounded-xl sage-gradient flex items-center justify-center text-white mb-4">
+                            <i class="fa-solid fa-mobile-screen-button text-lg"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-brand-dark mb-2">Dispositivos Principales</h3>
+                        <p class="text-sm text-brand-muted mb-4">El smartphone continúa siendo el dispositivo más habitual para comprar.</p>
+                        <div class="space-y-3">
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold mb-1">
+                                    <span>Smartphone</span>
+                                    <span>83,6%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 h-2.5 rounded-full overflow-hidden">
+                                    <div class="sage-gradient h-2.5 rounded-full" style="width: 83.6%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Métodos de Pago y Redes Sociales -->
+                    <div class="bg-brand-bg p-6 rounded-2xl border border-gray-200">
+                        <div class="w-12 h-12 rounded-xl sage-gradient flex items-center justify-center text-white mb-4">
+                            <i class="fa-solid fa-credit-card text-lg"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-brand-dark mb-2">Pagos y Canales Emergentes</h3>
+                        <p class="text-sm text-brand-muted mb-4">Tendencias de pago y adopción en plataformas sociales.</p>
+                        <ul class="space-y-2 text-sm text-brand-dark">
+                            <li class="flex justify-between border-b border-gray-200 pb-2">
+                                <span class="text-brand-muted">Tarjeta crédito / débito</span>
+                                <strong class="text-brand-dark">55,6%</strong>
+                            </li>
+                            <li class="flex justify-between pt-1">
+                                <span class="text-brand-muted">Redes Sociales (Canal compra)</span>
+                                <strong class="text-brand-sage font-bold">18,2% <span class="text-xs text-brand-muted font-normal">(Duplican uso desde 8,9%)</span></strong>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Productos estrella -->
+                    <div class="bg-brand-bg p-6 rounded-2xl border border-gray-200">
+                        <div class="w-12 h-12 rounded-xl sage-gradient flex items-center justify-center text-white mb-4">
+                            <i class="fa-solid fa-bag-shopping text-lg"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-brand-dark mb-2">Productos más Adquiridos</h3>
+                        <p class="text-sm text-brand-muted mb-4">Sectores con mayor demanda digital en España.</p>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between items-center bg-white p-3 rounded-xl border border-gray-200">
+                                <span class="font-medium text-brand-dark">Ropa</span>
+                                <span class="font-bold text-brand-sage">76,0%</span>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-3 rounded-xl border border-gray-200">
+                                <span class="font-medium text-brand-dark">Entrega de comida</span>
+                                <span class="font-bold text-brand-sage">60,2%</span>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-3 rounded-xl border border-gray-200">
+                                <span class="font-medium text-brand-dark">Alojamientos con empresa</span>
+                                <span class="font-bold text-brand-sage">57,5%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Intención Futura -->
+                <div class="mt-10 bg-brand-sagePale/30 p-6 rounded-2xl border border-brand-sage/20 flex flex-col sm:flex-row items-center justify-between">
+                    <div class="mb-4 sm:mb-0">
+                        <h3 class="font-bold text-base text-brand-dark">Intención de compra para el futuro</h3>
+                        <p class="text-sm text-brand-muted">El 54,7% prevé mantener su nivel de compras y el 29,1% tiene intención de aumentarlo.</p>
+                    </div>
+                    <div class="flex space-x-4">
+                        <div class="text-center px-4 py-2 bg-white rounded-xl border border-gray-200 shadow-sm">
+                            <span class="block text-xl font-bold text-brand-sage">54,7%</span>
+                            <span class="text-xs text-brand-muted">Mantiene nivel</span>
+                        </div>
+                        <div class="text-center px-4 py-2 bg-white rounded-xl border border-gray-200 shadow-sm">
+                            <span class="block text-xl font-bold text-brand-sage">29,1%</span>
+                            <span class="text-xs text-brand-muted">Aumentará compras</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="empresas" class="py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-3xl mx-auto text-center mb-12">
+                    <h2 class="text-3xl font-bold text-brand-dark">Comercio Electrónico en las Empresas y Tecnología</h2>
+                    <p class="mt-3 text-brand-muted">Adopción de ERP, CRM, Inteligencia Artificial y programas de apoyo público (Adigital/BCG y ONTSI).</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- ERP y CRM -->
+                    <div class="bg-white p-8 rounded-3xl border border-gray-200 shadow-sm">
+                        <h3 class="text-xl font-bold text-brand-dark mb-4 flex items-center">
+                            <i class="fa-solid fa-laptop-code text-brand-sage mr-3"></i>
+                            Software de Gestión Empresarial (ERP y CRM)
+                        </h3>
+                        <p class="text-sm text-brand-muted mb-6 leading-relaxed">
+                            El 50% de las pequeñas empresas (10-49 empleados) y el 78% de las medianas (50-249 empleados) utilizan ERP, posicionando a España a la cabeza en Europa. En CRM, la adopción es del 25% en pequeñas y 43% en medianas empresas.
+                        </p>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between text-sm font-semibold mb-1">
+                                    <span>Uso de ERP en Medianas Empresas</span>
+                                    <span>78%</span>
+                                </div>
+                                <div class="w-full bg-gray-100 h-3 rounded-full overflow-hidden">
+                                    <div class="sage-gradient h-3 rounded-full" style="width: 78%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm font-semibold mb-1">
+                                    <span>Uso de ERP en Pequeñas Empresas</span>
+                                    <span>50%</span>
+                                </div>
+                                <div class="w-full bg-gray-100 h-3 rounded-full overflow-hidden">
+                                    <div class="sage-gradient h-3 rounded-full" style="width: 50%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Inteligencia Artificial y Programas Públicos -->
+                    <div class="bg-white p-8 rounded-3xl border border-gray-200 shadow-sm">
+                        <h3 class="text-xl font-bold text-brand-dark mb-4 flex items-center">
+                            <i class="fa-solid fa-brain text-brand-sage mr-3"></i>
+                            Inteligencia Artificial y Kit Digital
+                        </h3>
+                        <p class="text-sm text-brand-muted mb-6 leading-relaxed">
+                            El 9% de las pequeñas empresas y el 21% de las medianas han incorporado la IA en sus procesos en 2024. Programas públicos como <strong>Kit Digital y Kit Consulting</strong> han sido fundamentales para facilitar la transformación digital de las pymes.
+                        </p>
+                        <div class="bg-brand-bg p-4 rounded-2xl border border-gray-200 space-y-3">
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-check text-brand-sage"></i>
+                                <span class="text-sm font-medium text-brand-dark">Ayudas FEDER e iniciativas de integración de IA.</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-check text-brand-sage"></i>
+                                <span class="text-sm font-medium text-brand-dark">Impulso a la ciberseguridad y presencia digital.</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-check text-brand-sage"></i>
+                                <span class="text-sm font-medium text-brand-dark">España destaca con un 32,2% de empresas vendiendo online.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq" class="py-16 bg-white border-y border-gray-200">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-3xl mx-auto text-center mb-12">
+                    <h2 class="text-3xl font-bold text-brand-dark">Preguntas Frecuentes (FAQ)</h2>
+                    <p class="mt-3 text-brand-muted">Respuestas claras basadas estrictamente en las fuentes oficiales seleccionadas.</p>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- FAQ 1 -->
+                    <div class="border border-gray-200 rounded-2xl overflow-hidden bg-brand-bg transition-all">
+                        <button onclick="toggleFaq('faq-1')" class="w-full px-6 py-4 text-left font-semibold text-brand-dark flex justify-between items-center focus:outline-none">
+                            <span>¿Cuántas personas compran online en España y cuál es su gasto medio?</span>
+                            <i id="icon-faq-1" class="fa-solid fa-chevron-down text-brand-sage transition-transform"></i>
+                        </button>
+                        <div id="faq-1" class="hidden px-6 pb-4 text-sm text-brand-muted leading-relaxed">
+                            Según el informe de la ONTSI (2025), <strong>29,4 millones de personas compran en línea</strong> (el 83,3% de quienes usan Internet). El gasto medio anual asciende a <strong>3.762 euros por persona</strong>, lo que supone un incremento del 13,8% respecto al año anterior.
+                        </div>
+                    </div>
+
+                    <!-- FAQ 2 -->
+                    <div class="border border-gray-200 rounded-2xl overflow-hidden bg-brand-bg transition-all">
+                        <button onclick="toggleFaq('faq-2')" class="w-full px-6 py-4 text-left font-semibold text-brand-dark flex justify-between items-center focus:outline-none">
+                            <span>¿Qué peso tiene la economía digital sobre el PIB total en España?</span>
+                            <i id="icon-faq-2" class="fa-solid fa-chevron-down text-brand-sage transition-transform"></i>
+                        </button>
+                        <div id="faq-2" class="hidden px-6 pb-4 text-sm text-brand-muted leading-relaxed">
+                            De acuerdo con el informe Adigital/BCG (2025), la economía digitalizada alcanzó el <strong>26,0% sobre el total del PIB en 2024</strong>, con un impacto económico de <strong>414 mil millones de euros</strong>, superando el crecimiento del PIB nominal.
+                        </div>
+                    </div>
+
+                    <!-- FAQ 3 -->
+                    <div class="border border-gray-200 rounded-2xl overflow-hidden bg-brand-bg transition-all">
+                        <button onclick="toggleFaq('faq-3')" class="w-full px-6 py-4 text-left font-semibold text-brand-dark flex justify-between items-center focus:outline-none">
+                            <span>¿Cuáles son los productos y métodos de pago más habituales?</span>
+                            <i id="icon-faq-3" class="fa-solid fa-chevron-down text-brand-sage transition-transform"></i>
+                        </button>
+                        <div id="faq-3" class="hidden px-6 pb-4 text-sm text-brand-muted leading-relaxed">
+                            La <strong>ropa (76%)</strong>, la entrega de comida (60,2%) y los alojamientos con empresa (57,5%) lideran las compras. El smartphone es el dispositivo preferido (83,6%) y la tarjeta de crédito o débito sigue siendo el método de pago más utilizado (55,6%).
+                        </div>
+                    </div>
+
+                    <!-- FAQ 4 -->
+                    <div class="border border-gray-200 rounded-2xl overflow-hidden bg-brand-bg transition-all">
+                        <button onclick="toggleFaq('faq-4')" class="w-full px-6 py-4 text-left font-semibold text-brand-dark flex justify-between items-center focus:outline-none">
+                            <span>¿Qué porcentaje de pymes y empresas venden a través de Internet?</span>
+                            <i id="icon-faq-4" class="fa-solid fa-chevron-down text-brand-sage transition-transform"></i>
+                        </button>
+                        <div id="faq-4" class="hidden px-6 pb-4 text-sm text-brand-muted leading-relaxed">
+                            Según los indicadores de comercio electrónico de la ONTSI, el <strong>32,2% de las empresas vende por Internet</strong>, situando a España muy por encima de la media de la UE27 (23,8%), impulsadas por programas como el Kit Digital.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="fuentes" class="py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-3xl mx-auto text-center mb-12">
+                    <h2 class="text-3xl font-bold text-brand-dark">Fuentes Oficiales Consultadas</h2>
+                    <p class="mt-3 text-brand-muted">Documentos oficiales exclusivos utilizados para la elaboración de esta plataforma.</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="w-10 h-10 rounded-xl sage-gradient flex items-center justify-center text-white mb-4">
+                                <i class="fa-solid fa-file-pdf"></i>
+                            </div>
+                            <h3 class="font-bold text-brand-dark text-base mb-2">
+                                <a href="https://www.ontsi.es/es/publicaciones/compras-online-en-espana-2025" target="_blank" rel="noopener noreferrer" class="hover:text-brand-sage transition-colors underline decoration-brand-sage/40 hover:decoration-brand-sage">ONTSI — Compras online en España 2025</a>
+                            </h3>
+                            <p class="text-xs text-brand-muted">Estudio cuantitativo sobre compradores, gasto medio y hábitos de consumo B2C.</p>
+                        </div>
+                        <span class="mt-6 text-xs font-semibold text-brand-sage">Fuente Oficial Verificada</span>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="w-10 h-10 rounded-xl sage-gradient flex items-center justify-center text-white mb-4">
+                                <i class="fa-solid fa-file-pdf"></i>
+                            </div>
+                            <h3 class="font-bold text-brand-dark text-base mb-2">
+                                <a href="https://www.adigital.org/doc/202505_informe-economia-digital.pdf" target="_blank" rel="noopener noreferrer" class="hover:text-brand-sage transition-colors underline decoration-brand-sage/40 hover:decoration-brand-sage">Adigital/BCG — Economía Digital en España 2025</a>
+                            </h3>
+                            <p class="text-xs text-brand-muted">Análisis de la contribución al PIB (26%) y digitalización sectorial.</p>
+                        </div>
+                        <span class="mt-6 text-xs font-semibold text-brand-sage">Fuente Oficial Verificada</span>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="w-10 h-10 rounded-xl sage-gradient flex items-center justify-center text-white mb-4">
+                                <i class="fa-solid fa-file-pdf"></i>
+                            </div>
+                            <h3 class="font-bold text-brand-dark text-base mb-2">
+                                <a href="https://www.ontsi.es/es/publicaciones/indicadores-de-comercio-electronico" target="_blank" rel="noopener noreferrer" class="hover:text-brand-sage transition-colors underline decoration-brand-sage/40 hover:decoration-brand-sage">ONTSI — Indicadores de comercio electrónico</a>
+                            </h3>
+                            <p class="text-xs text-brand-muted">Porcentaje de empresas que venden online (32,2%) y adopción de canales web y móvil.</p>
+                        </div>
+                        <span class="mt-6 text-xs font-semibold text-brand-sage">Fuente Oficial Verificada</span>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="w-10 h-10 rounded-xl sage-gradient flex items-center justify-center text-white mb-4">
+                                <i class="fa-solid fa-chart-bar"></i>
+                            </div>
+                            <h3 class="font-bold text-brand-dark text-base mb-2">
+                                <a href="https://data.cnmc.es/comercio-electronico" target="_blank" rel="noopener noreferrer" class="hover:text-brand-sage transition-colors underline decoration-brand-sage/40 hover:decoration-brand-sage">CNMC — Comercio electrónico</a>
+                            </h3>
+                            <p class="text-xs text-brand-muted">Portal estadístico de la Comisión Nacional de los Mercados y la Competencia sobre transacciones.</p>
+                        </div>
+                        <span class="mt-6 text-xs font-semibold text-brand-sage">Fuente Oficial Verificada</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:flex sm:justify-between sm:text-left items-center">
+            <div class="mb-4 sm:mb-0">
+                <span class="font-bold text-brand-dark text-base">Comercio Electrónico en España</span>
+                <p class="text-xs text-brand-muted mt-1">Plataforma informativa basada estrictamente en ONTSI, CNMC y Adigital/BCG.</p>
+            </div>
+            <div class="text-xs text-brand-muted">
+                &copy; 2026 &bull; Diseñado con criterios de accesibilidad y diseño moderno.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu on link click
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Expandable Navbar Search Toggle
+        function toggleNavbarSearch() {
+            const searchBox = document.getElementById('navbar-search-box');
+            searchBox.classList.toggle('hidden');
+            if(!searchBox.classList.contains('hidden')) {
+                document.getElementById('global-search').focus();
+            }
+        }
+
+        // Close search popup when clicking outside
+        window.addEventListener('click', (e) => {
+            const searchBox = document.getElementById('navbar-search-box');
+            const toggleBtn = document.getElementById('search-toggle-btn');
+            if (!searchBox.contains(e.target) && !toggleBtn.contains(e.target)) {
+                searchBox.classList.add('hidden');
+            }
+        });
+
+        // FAQ Toggle Function
+        function toggleFaq(id) {
+            const content = document.getElementById(id);
+            const icon = document.getElementById('icon-' + id);
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                if(icon) icon.classList.add('rotate-180');
+            } else {
+                content.classList.add('hidden');
+                if(icon) icon.classList.remove('rotate-180');
+            }
+        }
+
+        // Global Search Functionality
+        const searchInput = document.getElementById('global-search');
+        const searchResultsBox = document.getElementById('search-results-box');
+
+        const searchDatabase = [
+            { title: "29,4 millones de compradores", desc: "El 83,3% de los internautas en España compran en línea (ONTSI 2025).", link: "#inicio" },
+            { title: "Gasto medio anual: 3.762 €", desc: "Supone un incremento del 13,8% respecto al año anterior (ONTSI 2025).", link: "#inicio" },
+            { title: "Economía Digitalizada: 26,0% del PIB", desc: "Impacto total de 414 mil millones de euros en 2024 (Adigital/BCG).", link: "#que-es" },
+            { title: "Volumen de negocio B2C: 110.683 M€", desc: "Aumento del 11,5% interanual (ONTSI 2025).", link: "#cifras" },
+            { title: "Smartphone (83,6%)", desc: "Dispositivo más habitual para realizar compras online en España.", link: "#habitos" },
+            { title: "Tarjeta bancaria (55,6%)", desc: "Método de pago más utilizado en las transacciones.", link: "#habitos" },
+            { title: "Ropa (76%)", desc: "Producto más adquirido por los compradores online.", link: "#habitos" },
+            { title: "Empresas que venden online (32,2%)", desc: "Muy por encima de la media de la UE27 (23,8%) según ONTSI.", link: "#empresas" },
+            { title: "Kit Digital y Kit Consulting", desc: "Programas públicos clave para la adopción de ERP, CRM e IA en pymes.", link: "#empresas" }
+        ];
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            if (query.length < 2) {
+                searchResultsBox.classList.add('hidden');
+                searchResultsBox.innerHTML = '';
+                return;
+            }
+
+            const matches = searchDatabase.filter(item => 
+                item.title.toLowerCase().includes(query) || item.desc.toLowerCase().includes(query)
+            );
+
+            if (matches.length > 0) {
+                let html = '<div class="space-y-1.5">';
+                matches.forEach(m => {
+                    html += `<a href="${m.link}" onclick="document.getElementById('navbar-search-box').classList.add('hidden')" class="block p-2 hover:bg-brand-sagePale/30 rounded-lg transition-colors">
+                        <strong class="text-brand-dark block text-xs">${m.title}</strong>
+                        <span class="text-brand-muted text-[11px]">${m.desc}</span>
+                    </a>`;
+                });
+                html += '</div>';
+                searchResultsBox.innerHTML = html;
+                searchResultsBox.classList.remove('hidden');
+            } else {
+                searchResultsBox.innerHTML = '<p class="text-xs text-brand-muted py-2 px-1">No se encontraron resultados oficiales.</p>';
+                searchResultsBox.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
