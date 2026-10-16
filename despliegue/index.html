@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Despliegue de Aplicaciones Web - Unidad 1 | DAW 2</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .dark .glass-panel {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(51, 65, 85, 0.8);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen transition-colors duration-300">
+
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-50 glass-panel shadow-sm border-b dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-indigo-600 text-white p-2 rounded-xl shadow-md flex items-center justify-center font-bold text-lg">
+                    <i class="fa-solid fa-server"></i>
+                </div>
+                <div>
+                    <span class="text-xs uppercase font-bold text-indigo-600 dark:text-indigo-400 tracking-wider">2º DAW · Mónica Pérez</span>
+                    <h1 class="text-base font-bold text-slate-900 dark:text-white leading-tight">Despliegue de Apps Web</h1>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <!-- Global Search Input -->
+                <div class="relative hidden md:block w-64">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
+                        <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                    </span>
+                    <input type="text" id="globalSearch" placeholder="Buscar conceptos, tecnologías..." 
+                           class="w-full pl-9 pr-4 py-1.5 text-xs bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-800 dark:text-slate-200">
+                </div>
+
+                <!-- Theme Toggle Button -->
+                <button id="themeToggle" class="p-2 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 transition" title="Cambiar Tema">
+                    <i class="fa-solid fa-moon dark:hidden"></i>
+                    <i class="fa-solid fa-sun hidden dark:inline"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-1 lg:grid-cols-4 gap-8">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="lg:col-span-1 hidden lg:block">
+            <div class="sticky top-24 space-y-1 bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800">
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 px-3 mb-2">Índice del Tema</p>
+                <a href="#hero" class="sidebar-link flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 hover:text-indigo-600 transition">
+                    <i class="fa-solid fa-house w-5 text-center"></i><span>Inicio & Presentación</span>
+                </a>
+                <a href="#introduccion" class="sidebar-link flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 hover:text-indigo-600 transition">
+                    <i class="fa-solid fa-book-open w-5 text-center"></i><span>1. Introducción y Ventajas</span>
+                </a>
+                <a href="#tecnologias" class="sidebar-link flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 hover:text-indigo-600 transition">
+                    <i class="fa-solid fa-code w-5 text-center"></i><span>2. Tecnologías Web</span>
+                </a>
+                <a href="#tipos" class="sidebar-link flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 hover:text-indigo-600 transition">
+                    <i class="fa-solid fa-layer-group w-5 text-center"></i><span>3. Tipos de Apps Web</span>
+                </a>
+                <a href="#escalabilidad" class="sidebar-link flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 hover:text-indigo-600 transition">
+                    <i class="fa-solid fa-chart-line w-5 text-center"></i><span>4. Escalabilidad y Carga</span>
+                </a>
+                <a href="#microservicios" class="sidebar-link flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 hover:text-indigo-600 transition">
+                    <i class="fa-solid fa-cubes w-5 text-center"></i><span>5. Microservicios</span>
+                </a>
+                <a href="#arquitectura" class="sidebar-link flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 hover:text-indigo-600 transition">
+                    <i class="fa-solid fa-network-wired w-5 text-center"></i><span>6. Arquitecturas Web</span>
+                </a>
+                <a href="#plataformas" class="sidebar-link flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 hover:text-indigo-600 transition">
+                    <i class="fa-solid fa-laptop-code w-5 text-center"></i><span>7. Plataformas de Desarrollo</span>
+                </a>
+                <a href="#laboratorio" class="sidebar-link flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50/80 dark:bg-indigo-950/50 mt-4 transition">
+                    <i class="fa-solid fa-graduation-cap w-5 text-center"></i><span>Laboratorio & Quiz DAW</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="lg:col-span-3 space-y-12">
+            
+            <!-- Hero Section -->
+            <section id="hero" class="relative bg-gradient-to-br from-indigo-900 via-slate-900 to-indigo-950 text-white rounded-3xl p-8 sm:p-12 shadow-xl overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl pointer-events-none">
+                    <i class="fa-solid fa-server"></i>
+                </div>
+                <div class="relative z-10 max-w-2xl">
+                    <span class="inline-block bg-indigo-500/30 border border-indigo-400/30 text-indigo-300 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4">
+                        Módulo: Despliegue de Aplicaciones Web
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4">Unidad 1: Introducción al Despliegue</h2>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
+                        Material didáctico interactivo basado en los apuntes de la profesora <strong>Mónica Pérez</strong>, adaptado específicamente para el alumnado de 2.º curso del ciclo formativo de Desarrollo de Aplicaciones Web (DAW).
+                    </p>
+                    <div class="flex flex-wrap gap-4 text-xs font-medium">
+                        <div class="bg-white/10 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10 flex items-center space-x-2">
+                            <i class="fa-solid fa-book-bookmark text-indigo-400"></i>
+                            <span>8 Secciones Teóricas</span>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10 flex items-center space-x-2">
+                            <i class="fa-solid fa-puzzle-piece text-indigo-400"></i>
+                            <span>Quiz Evaluativo DAW</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 1: Introducción, Ventajas y Desventajas -->
+            <section id="introduccion" class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+                <div class="flex items-center space-x-4 border-b border-slate-100 dark:border-slate-800 pb-4">
+                    <div class="bg-indigo-100 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 p-3 rounded-2xl text-xl">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Bloque 01</span>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">1. Introducción, Ventajas y Desventajas</h3>
+                    </div>
+                </div>
+
+                <div class="space-y-4 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                    <p>
+                        En la Ingeniería de software se denomina <strong>aplicación web</strong> a aquellas aplicaciones que los usuarios pueden utilizar accediendo a un servidor web a través de Internet o de una intranet mediante un navegador. Se codifica en un lenguaje soportado por navegadores web y confía su ejecución al cliente ligero.
+                    </p>
+                </div>
+
+                <!-- Interactive Comparison Cards: Ventajas vs Desventajas -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                    <div class="bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900/50 rounded-2xl p-6 space-y-4">
+                        <h4 class="flex items-center space-x-2 font-bold text-emerald-700 dark:text-emerald-400 text-base">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>Ventajas Principales</span>
+                        </h4>
+                        <ul class="space-y-2 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                            <li class="flex items-start space-x-2"><i class="fa-solid fa-check text-emerald-500 mt-1"></i><span>No es necesaria ninguna instalación previa.</span></li>
+                            <li class="flex items-start space-x-2"><i class="fa-solid fa-check text-emerald-500 mt-1"></i><span>Ahorro de tiempo y espacio en disco duro local.</span></li>
+                            <li class="flex items-start space-x-2"><i class="fa-solid fa-check text-emerald-500 mt-1"></i><span>Bajo consumo de recursos y mayor seguridad de datos.</span></li>
+                            <li class="flex items-start space-x-2"><i class="fa-solid fa-check text-emerald-500 mt-1"></i><span>Multiplataforma y multidispositivo por naturaleza.</span></li>
+                            <li class="flex items-start space-x-2"><i class="fa-solid fa-check text-emerald-500 mt-1"></i><span>Uso intuitivo y actualizaciones centralizadas en servidor.</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/50 rounded-2xl p-6 space-y-4">
+                        <h4 class="flex items-center space-x-2 font-bold text-rose-700 dark:text-rose-400 text-base">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <span>Desventajas Principales</span>
+                        </h4>
+                        <ul class="space-y-2 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                            <li class="flex items-start space-x-2"><i class="fa-solid fa-xmark text-rose-500 mt-1"></i><span>Menos funcionalidades que aplicaciones nativas de escritorio.</span></li>
+                            <li class="flex items-start space-x-2"><i class="fa-solid fa-xmark text-rose-500 mt-1"></i><span>Disponibilidad supeditada al proveedor de red o internet.</span></li>
+                            <li class="flex items-start space-x-2"><i class="fa-solid fa-xmark text-rose-500 mt-1"></i><span>Diferencia clave: cliente web vs cliente nativo (backend vs app completa).</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Tecnologías Web -->
+            <section id="tecnologias" class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+                <div class="flex items-center space-x-4 border-b border-slate-100 dark:border-slate-800 pb-4">
+                    <div class="bg-indigo-100 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 p-3 rounded-2xl text-xl">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Bloque 02</span>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">2. Tecnologías Web</h3>
+                    </div>
+                </div>
+
+                <p class="text-sm text-slate-600 dark:text-slate-300">
+                    Haz clic en cada categoría para explorar los componentes tecnológicos fundamentales que sustentan el desarrollo y despliegue web moderno:
+                </p>
+
+                <!-- Interactive Tabs for Technologies -->
+                <div class="space-y-4">
+                    <div class="flex flex-wrap gap-2 border-b border-slate-200 dark:border-slate-800 pb-3" id="techTabs">
+                        <button onclick="switchTechTab('basicas')" class="tech-tab px-4 py-2 text-xs font-bold rounded-xl bg-indigo-600 text-white transition shadow-sm">Básicas</button>
+                        <button onclick="switchTechTab('lenguajes')" class="tech-tab px-4 py-2 text-xs font-bold rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 transition">Lenguajes de Programación</button>
+                        <button onclick="switchTechTab('apis')" class="tech-tab px-4 py-2 text-xs font-bold rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 transition">APIs Web</button>
+                        <button onclick="switchTechTab('graficos')" class="tech-tab px-4 py-2 text-xs font-bold rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 transition">Gráficos & Otros</button>
+                    </div>
+
+                    <!-- Tab Contents -->
+                    <div id="tech-basicas" class="tech-content grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="p-4 bg-slate-50 dark:bg-slate-950/50 rounded-2xl border border-slate-200 dark:border-slate-800">
+                            <h5 class="font-bold text-indigo-600 dark:text-indigo-400 mb-1">HTML</h5>
+                            <p class="text-xs text-slate-600 dark:text-slate-400">HyperText Markup Language. Describe y define el contenido web en un formato estructurado.</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 dark:bg-slate-950/50 rounded-2xl border border-slate-200 dark:border-slate-800">
+                            <h5 class="font-bold text-indigo-600 dark:text-indigo-400 mb-1">CSS</h5>
+                            <p class="text-xs text-slate-600 dark:text-slate-400">Cascading Style Sheets. Describe el aspecto y la presentación visual del contenido.</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 dark:bg-slate-950/50 rounded-2xl border border-slate-200 dark:border-slate-800">
+                            <h5 class="font-bold text-indigo-600 dark:text-indigo-400 mb-1">HTTP</h5>
+                            <p class="text-xs text-slate-600 dark:text-slate-400">Protocolo de transferencia de hipertexto para la transmisión de documentos hipermedia.</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 dark:bg-slate-950/50 rounded-2xl border border-slate-200 dark:border-slate-800">
+                            <h5 class="font-bold text-indigo-600 dark:text-indigo-400 mb-1">CGI</h5>
+                            <p class="text-xs text-slate-600 dark:text-slate-400">Common Gateway Interface. Permite al servidor web interactuar con programas externos para contenido dinámico.</p>
+                        </div>
+                    </div>
+
+                    <div id="tech-lenguajes" class="tech-content hidden grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="p-4 bg-slate-50 dark:bg-slate-950/50 rounded-2xl border border-slate-200 dark:border-slate-800">
+                            <h5 class="font-bold text-indigo-600 dark:text-indigo-400 mb-1">JavaScript</h5>
+                            <p class="text-xs text-slate-600 dark:text-slate-400">Ejecutado en el navegador para crear aplicaciones interactivas y avanzadas.</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 dark:bg-slate-950/50 rounded-2xl border border-slate-200 dark:border-slate-800">
+                            <h5 class="font-bold text-indigo-600 dark:text-indigo-400 mb-1">PHP</h5>
+                            <p class="text-xs text-slate-600 dark:text-slate-400">Backend muy popular y eficiente, motor de CMS como WordPress, Joomla o Drupal.</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 dark:bg-slate-950/50 rounded-2xl border border-slate-200 dark:border-slate-800">
+                            <h5 class="font-bold text-indigo-600 dark:text-indigo-400 mb-1">Java & Python & C#</h5>
+                            <p class="text-xs text-slate-600 dark:text-slate-400">Lenguajes orientados a objetos y de propósito general orientados fuertemente al desarrollo web backend.</p>
+                        </div>
+                    </div>
+
+                    <div id="tech-apis" class="tech-content hidden grid grid-cols-1 gap-4">
+                        <div class="p-4 bg-slate-50 dark:bg-slate-950/50 rounded-2xl border border-slate-200 dark:border-slate-800">
+                            <h5 class="font-bold text-indigo-600 dark:text-indigo-400 mb-1">APIs Web & REST</h5>
+                            <p class="text-xs text-slate-600 dark:text-slate-400">Conjunto de definiciones y protocolos (GET, POST, PUT, DELETE) con formatos JSON/XML para comunicar sistemas sin conocer su implementación interna.</p>
+                        </div>
+                    </div>
+
+                    <div id="tech-graficos" class="tech-content hidden grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="p-4 bg-slate-50 dark:bg-slate-950/50 rounded-2xl border border-slate-200 dark:border-slate-800">
+                            <h5 class="font-bold text-indigo-600 dark:text-indigo-400 mb-1">SVG, PNG & GIF</h5>
+                            <p class="text-xs text-slate-600 dark:text-slate-400">Gráficos vectoriales escalables, compresión sin pérdida con transparencias e imágenes en movimiento.</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 dark:bg-slate-950/50 rounded-2xl border border-slate-200 dark:border-slate-800">
+                            <h5 class="font-bold text-indigo-600 dark:text-indigo-400 mb-1">WebGL & ASP</h5>
+                            <p class="text-xs text-slate-600 dark:text-slate-400">WebGL para gráficos 3D/2D por canvas, y ASP como marco de Microsoft para creación dinámica.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: Tipos de Aplicaciones Web -->
+            <section id="tipos" class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+                <div class="flex items-center space-x-4 border-b border-slate-100 dark:border-slate-800 pb-4">
+                    <div class="bg-indigo-100 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 p-3 rounded-2xl text-xl">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Bloque 03</span>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">3. Tipos de Aplicaciones Web</h3>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 space-y-2">
+                        <div class="text-indigo-600 dark:text-indigo-400 font-bold text-sm"><i class="fa-solid fa-file-code mr-2"></i>Web Estática</div>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">Sencillas, HTML y CSS. Sin bases de datos dinámicas frecuentes. Requieren resubir archivos para cambios.</p>
+                    </div>
+                    <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 space-y-2">
+                        <div class="text-indigo-600 dark:text-indigo-400 font-bold text-sm"><i class="fa-solid fa-database mr-2"></i>Web Dinámica</div>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">Uso de bases de datos y lenguajes backend (PHP, JS). Contenido actualizado por usuario y paneles CMS.</p>
+                    </div>
+                    <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 space-y-2">
+                        <div class="text-indigo-600 dark:text-indigo-400 font-bold text-sm"><i class="fa-solid fa-cart-shopping mr-2"></i>E-Commerce</div>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">Tiendas online con pasarelas de pago (PayPal, tarjeta) y sincronización con stocks y logística.</p>
+                    </div>
+                    <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 space-y-2">
+                        <div class="text-indigo-600 dark:text-indigo-400 font-bold text-sm"><i class="fa-solid fa-globe mr-2"></i>Portal Web</div>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">Página principal que da acceso a diversos apartados: foros, correo, buscadores y áreas de registro.</p>
+                    </div>
+                    <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 space-y-2">
+                        <div class="text-indigo-600 dark:text-indigo-400 font-bold text-sm"><i class="fa-solid fa-wand-magic-sparkles mr-2"></i>Animada (HTML5/SVG)</div>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">Efectos visuales animados mediante CSS/SVG (reemplazando Flash). No idóneas para SEO.</p>
+                    </div>
+                    <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 space-y-2">
+                        <div class="text-indigo-600 dark:text-indigo-400 font-bold text-sm"><i class="fa-solid fa-newspaper mr-2"></i>Con CMS</div>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">Gestores como WordPress, Drupal o Joomla para publicaciones constantes de noticias y blogs.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 4: Escalabilidad y Balance de Carga -->
+            <section id="escalabilidad" class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+                <div class="flex items-center space-x-4 border-b border-slate-100 dark:border-slate-800 pb-4">
+                    <div class="bg-indigo-100 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 p-3 rounded-2xl text-xl">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Bloque 04</span>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">4. Escalabilidad y Balance de Carga</h3>
+                    </div>
+                </div>
+
+                <p class="text-sm text-slate-600 dark:text-slate-300">
+                    La escalabilidad es la capacidad del software para adaptarse a las crecientes necesidades de rendimiento y número de usuarios. Se divide en dos enfoques principales:
+                </p>
+
+                <!-- Escalability Comparison Matrix -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-6 rounded-2xl bg-indigo-50/50 dark:bg-indigo-950/20 border border-indigo-100 dark:border-indigo-900/40 space-y-3">
+                        <h4 class="font-bold text-indigo-700 dark:text-indigo-400 text-base flex items-center space-x-2">
+                            <i class="fa-solid fa-arrow-up-right-dots"></i>
+                            <span>Escalabilidad Vertical (Scale Up)</span>
+                        </h4>
+                        <p class="text-xs text-slate-600 dark:text-slate-300">
+                            Añadir más recursos a un solo nodo particular (más memoria RAM, mejor CPU o disco duro más rápido).
+                        </p>
+                        <div class="text-xs space-y-1 text-slate-500 dark:text-slate-400 pt-2 border-t border-indigo-100 dark:border-indigo-900/30">
+                            <p><strong>Ventajas:</strong> Fácil de implementar, impacto mínimo en código.</p>
+                            <p><strong>Desventajas:</strong> Limitado por el hardware máximo, un fallo detiene la aplicación.</p>
+                        </div>
+                    </div>
+
+                    <div class="p-6 rounded-2xl bg-indigo-50/50 dark:bg-indigo-950/20 border border-indigo-100 dark:border-indigo-900/40 space-y-3">
+                        <h4 class="font-bold text-indigo-700 dark:text-indigo-400 text-base flex items-center space-x-2">
+                            <i class="fa-solid fa-network-wired"></i>
+                            <span>Escalabilidad Horizontal (Scale Out)</span>
+                        </h4>
+                        <p class="text-xs text-slate-600 dark:text-slate-300">
+                            Añadir múltiples servidores (nodos) trabajando en clúster y repartiendo la carga mediante un balanceador.
+                        </p>
+                        <div class="text-xs space-y-1 text-slate-500 dark:text-slate-400 pt-2 border-t border-indigo-100 dark:border-indigo-900/30">
+                            <p><strong>Ventajas:</strong> Crecimiento casi infinito, alta disponibilidad.</p>
+                            <p><strong>Desventajas:</strong> Gran rediseño arquitectónico y mayor mantenimiento.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Load Balancer Sub-section -->
+                <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 space-y-3">
+                    <h5 class="font-bold text-slate-900 dark:text-white text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-scale-balanced text-indigo-500"></i>
+                        <span>Balance de Carga: Hardware vs Software</span>
+                    </h5>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-slate-600 dark:text-slate-400">
+                        <div>
+                            <strong class="text-slate-800 dark:text-slate-200">Por Hardware:</strong> Dispositivos rápidos basados en conmutación de circuitos. No examinan paquetes HTTP, requiriendo gestionar sesiones en cookies o bases de datos externas.
+                        </div>
+                        <div>
+                            <strong class="text-slate-800 dark:text-slate-200">Por Software:</strong> Examinan el paquete HTTP y registran la sesión del usuario para garantizar que siempre atienda la misma máquina del clúster.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 5: Microservicios -->
+            <section id="microservicios" class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+                <div class="flex items-center space-x-4 border-b border-slate-100 dark:border-slate-800 pb-4">
+                    <div class="bg-indigo-100 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 p-3 rounded-2xl text-xl">
+                        <i class="fa-solid fa-cubes"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Bloque 05</span>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">5. Microservicios vs Arquitectura Monolítica</h3>
+                    </div>
+                </div>
+
+                <p class="text-sm text-slate-600 dark:text-slate-300">
+                    Con los microservicios, las aplicaciones se dividen en elementos pequeños e independientes que funcionan en conjunto. Frente al modelo tradicional monolítico, destacan por su modularidad y escalabilidad independiente.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-5 rounded-2xl bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/30 space-y-2">
+                        <h5 class="font-bold text-emerald-700 dark:text-emerald-400 text-sm">Ventajas Clave</h5>
+                        <ul class="text-xs space-y-1 text-slate-600 dark:text-slate-300">
+                            <li>• Modularidad y despliegue independiente.</li>
+                            <li>• Escalabilidad horizontal por módulo específico.</li>
+                            <li>• Versatilidad tecnológica (distintos lenguajes).</li>
+                            <li>• Mantenimiento simple y rápido.</li>
+                        </ul>
+                    </div>
+                    <div class="p-5 rounded-2xl bg-rose-50/50 dark:bg-rose-950/20 border border-rose-100 dark:border-rose-900/30 space-y-2">
+                        <h5 class="font-bold text-rose-700 dark:text-rose-400 text-sm">Desventajas Principales</h5>
+                        <ul class="text-xs space-y-1 text-slate-600 dark:text-slate-300">
+                            <li>• Alto consumo de memoria y CPU.</li>
+                            <li>• Complejidad de gestión e integración.</li>
+                            <li>• Dificultad en pruebas y test globales distribuidos.</li>
+                            <li>• Coste de implantación inicial elevado.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 6: Arquitecturas Web y Evolución -->
+            <section id="arquitectura" class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+                <div class="flex items-center space-x-4 border-b border-slate-100 dark:border-slate-800 pb-4">
+                    <div class="bg-indigo-100 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 p-3 rounded-2xl text-xl">
+                        <i class="fa-solid fa-network-wired"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Bloque 06</span>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">6. Arquitecturas Web y Modelos de Capas</h3>
+                    </div>
+                </div>
+
+                <p class="text-sm text-slate-600 dark:text-slate-300">
+                    Las arquitecturas modelan la aplicación definiendo sus grupos lógicos de funcionamiento y comunicación:
+                </p>
+
+                <!-- Three-tier model details -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 space-y-2">
+                        <div class="text-indigo-600 dark:text-indigo-400 font-bold text-sm">1. Capa de Presentación</div>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">Interfaz de usuario. Recoge datos, realiza validación básica de formato y presenta los resultados visuales.</p>
+                    </div>
+                    <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 space-y-2">
+                        <div class="text-indigo-600 dark:text-indigo-400 font-bold text-sm">2. Capa de Proceso / Negocio</div>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">Servidor web. Reside la lógica de negocio y reglas. Actúa de puente seguro entre la presentación y los datos.</p>
+                    </div>
+                    <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 space-y-2">
+                        <div class="text-indigo-600 dark:text-indigo-400 font-bold text-sm">3. Capa de Datos</div>
+                        <p class="text-xs text-slate-600 dark:text-slate-400">SGBD encargado del almacenamiento, recuperación, modificación y mantenimiento seguro de la información.</p>
+                    </div>
+                </div>
+
+                <!-- Interactive Architecture Comparison Tool -->
+                <div class="bg-indigo-50/50 dark:bg-indigo-950/30 p-6 rounded-2xl border border-indigo-100 dark:border-indigo-900/50 space-y-4">
+                    <h4 class="font-bold text-indigo-700 dark:text-indigo-400 text-sm">Comparador Interactivo de Modelos Arquitectónicos</h4>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="switchArch('p2p')" class="arch-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-indigo-600 text-white">P2P (Punto a Punto)</button>
+                        <button onclick="switchArch('cs2')" class="arch-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Cliente-Servidor (2 Capas)</button>
+                        <button onclick="switchArch('cs3')" class="arch-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Modelo de 3 Capas</button>
+                    </div>
+                    <div id="arch-desc" class="text-xs text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 leading-relaxed">
+                        <strong>Redes P2P:</strong> Arquitectura descentralizada donde los nodos (peers) actúan simultáneamente como clientes y servidores de recursos. Ofrece gran escalabilidad y robustez sin depender de servidores centrales.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 7: Plataformas de Desarrollo Web -->
+            <section id="plataformas" class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+                <div class="flex items-center space-x-4 border-b border-slate-100 dark:border-slate-800 pb-4">
+                    <div class="bg-indigo-100 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 p-3 rounded-2xl text-xl">
+                        <i class="fa-solid fa-laptop-code"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Bloque 07</span>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">7. Plataformas de Desarrollo Web</h3>
+                    </div>
+                </div>
+
+                <p class="text-sm text-slate-600 dark:text-slate-300">
+                    Una plataforma web es el entorno empleado para diseñar y ejecutar sitios web. Consta de 4 componentes básicos:
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="p-4 bg-slate-50 dark:bg-slate-950/50 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-1">
+                        <div class="text-indigo-600 dark:text-indigo-400 font-bold text-xs"><i class="fa-solid fa-desktop mr-1.5"></i>1. Sistema Operativo</div>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Base donde opera el equipo servidor y aloja los servicios.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 dark:bg-slate-950/50 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-1">
+                        <div class="text-indigo-600 dark:text-indigo-400 font-bold text-xs"><i class="fa-solid fa-server mr-1.5"></i>2. Servidor Web</div>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Software que gestiona peticiones HTTP de equipos remotos.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 dark:bg-slate-950/50 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-1">
+                        <div class="text-indigo-600 dark:text-indigo-400 font-bold text-xs"><i class="fa-solid fa-database mr-1.5"></i>3. Gestor de BD</div>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Almacena y organiza sistemáticamente registros de datos.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 dark:bg-slate-950/50 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-1">
+                        <div class="text-indigo-600 dark:text-indigo-400 font-bold text-xs"><i class="fa-solid fa-file-code mr-1.5"></i>4. Lenguaje Interpretado</div>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Código, frameworks y bibliotecas de lógica de software.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 8: Laboratorio & Quiz Interactivo DAW -->
+            <section id="laboratorio" class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+                <div class="flex items-center space-x-4 border-b border-slate-100 dark:border-slate-800 pb-4">
+                    <div class="bg-indigo-600 text-white p-3 rounded-2xl text-xl">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Laboratorio Práctico</span>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">Quiz de Autoevaluación - Tema 1 DAW</h3>
+                    </div>
+                </div>
+
+                <div id="quizContainer" class="space-y-6">
+                    <div id="questionBox" class="space-y-4">
+                        <div class="flex justify-between items-center text-xs text-slate-400">
+                            <span id="questionProgress">Pregunta 1 de 4</span>
+                            <span id="quizScoreTracker">Puntuación: 0</span>
+                        </div>
+                        <h4 id="questionTitle" class="text-base font-bold text-slate-900 dark:text-white"></h4>
+                        <div id="optionsList" class="grid grid-cols-1 gap-3"></div>
+                    </div>
+                    <div id="quizFeedback" class="hidden p-4 rounded-xl text-xs font-medium"></div>
+                    <button id="nextQuestionBtn" onclick="nextQuizQuestion()" class="hidden w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl transition shadow-md">
+                        Siguiente Pregunta
+                    </button>
+                </div>
+            </section>
+
+            <!-- Bibliografía Section -->
+            <section class="bg-slate-100 dark:bg-slate-900/50 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 space-y-3">
+                <h4 class="text-sm font-bold text-slate-800 dark:text-slate-200 flex items-center space-x-2">
+                    <i class="fa-solid fa-bookmark text-indigo-600"></i>
+                    <span>8. Bibliografía y Referencias del Tema</span>
+                </h4>
+                <p class="text-xs text-slate-600 dark:text-slate-400">
+                    Despliegue de aplicaciones web. García Sánchez, Álvaro y Sanz Rodríguez, Javier (Ed. Garceta). | Comesaña, José Luis. | MDN Web Docs | Ecured | W3C.
+                </p>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-xs text-slate-500 border-t border-slate-200 dark:border-slate-800 mt-12">
+        <p>Desarrollo de Aplicaciones Web (DAW) · Módulo de Despliegue de Aplicaciones Web · Basado en apuntes de Mónica Pérez.</p>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Dark Mode Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+        });
+
+        // Technologies Tab Switcher
+        function switchTechTab(tabId) {
+            document.querySelectorAll('.tech-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById('tech-' + tabId).classList.remove('hidden');
+            
+            document.querySelectorAll('.tech-tab').forEach(btn => {
+                btn.classList.remove('bg-indigo-600', 'text-white', 'shadow-sm');
+                btn.classList.add('bg-slate-100', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-300');
+            });
+            event.currentTarget.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-300');
+            event.currentTarget.classList.add('bg-indigo-600', 'text-white', 'shadow-sm');
+        }
+
+        // Architecture Switcher
+        function switchArch(type) {
+            document.querySelectorAll('.arch-btn').forEach(btn => {
+                btn.classList.remove('bg-indigo-600', 'text-white');
+                btn.classList.add('bg-slate-200', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-300');
+            });
+            event.currentTarget.classList.remove('bg-slate-200', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-300');
+            event.currentTarget.classList.add('bg-indigo-600', 'text-white');
+
+            const descBox = document.getElementById('arch-desc');
+            if(type === 'p2p') {
+                descBox.innerHTML = '<strong>Redes P2P:</strong> Arquitectura descentralizada donde los nodos (peers) actúan simultáneamente como clientes y servidores de recursos. Ofrece gran escalabilidad y robustez sin depender de servidores centrales.';
+            } else if(type === 'cs2') {
+                descBox.innerHTML = '<strong>Modelo Cliente-Servidor (Dos capas):</strong> Conformado por un cliente que realiza peticiones y un servidor que da respuesta y gestiona datos. Presenta centralización del control pero problemas de congestión de tráfico.';
+            } else if(type === 'cs3') {
+                descBox.innerHTML = '<strong>Modelo de Tres Capas:</strong> Introduce una capa intermedia (proceso / lógica de negocio) entre la presentación y la base de datos, simplificando la administración y mejorando la seguridad.';
+            }
+        }
+
+        // Global Instant Search Filter
+        const globalSearch = document.getElementById('globalSearch');
+        globalSearch.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            if(!term) return;
+            const sections = document.querySelectorAll('section');
+            for(let sec of sections) {
+                if(sec.innerText.toLowerCase().includes(term)) {
+                    sec.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    sec.classList.add('ring-2', 'ring-indigo-500');
+                    setTimeout(() => sec.classList.remove('ring-2', 'ring-indigo-500'), 2000);
+                    break;
+                }
+            }
+        });
+
+        // Interactive Quiz Engine
+        const quizData = [
+            {
+                question: "¿Cuál de las siguientes es una ventaja fundamental de las aplicaciones web frente a las de escritorio?",
+                options: [
+                    "Requieren instalación obligatoria en disco duro local.",
+                    "No requieren ninguna instalación y son multiplataforma.",
+                    "Dependen estrictamente del sistema operativo del cliente.",
+                    "Tienen siempre mayor funcionalidad que las nativas."
+                ],
+                correct: 1,
+                explanation: "Correcto. Las aplicaciones web no requieren instalación previa y se ejecutan en navegadores, siendo multiplataforma."
+            },
+            {
+                question: "¿En qué consiste la escalabilidad horizontal (Scale Out)?",
+                options: [
+                    "En añadir más memoria RAM o mejor procesador a un único servidor nodo.",
+                    "En añadir múltiples servidores (nodos) trabajando en clúster repartiendo el trabajo.",
+                    "En sustituir el disco duro por unidades SSD más rápidas.",
+                    "En eliminar las bases de datos relacionales."
+                ],
+                correct: 1,
+                explanation: "Correcto. La escalabilidad horizontal añade nodos a un sistema formando un clúster para repartir la carga de trabajo."
+            },
+            {
+                question: "¿Qué componente arquitectónico del modelo de tres capas centraliza las reglas de negocio?",
+                options: [
+                    "La capa de presentación o interfaz.",
+                    "La capa de datos (SGBD).",
+                    "La capa de proceso / lógica de negocio (servidor web).",
+                    "El balanceador de carga hardware."
+                ],
+                correct: 2,
+                explanation: "Correcto. La capa de proceso aloja la lógica de negocio y hace de puente seguro entre la presentación y los datos."
+            },
+            {
+                question: "¿Qué lenguaje backend es ampliamente conocido por ser el motor de CMS populares como WordPress?",
+                options: ["Python", "PHP", "C#", "Java"],
+                correct: 1,
+                explanation: "Correcto. PHP es un lenguaje backend muy eficiente y popular, motor de WordPress, Drupal y Joomla."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function loadQuizQuestion() {
+            const q = quizData[currentQuestion];
+            document.getElementById('questionProgress').innerText = `Pregunta ${currentQuestion + 1} de ${quizData.length}`;
+            document.getElementById('quizScoreTracker').innerText = `Puntuación: ${score}`;
+            document.getElementById('questionTitle').innerText = q.question;
+            
+            const optionsList = document.getElementById('optionsList');
+            optionsList.innerHTML = '';
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full text-left p-3 text-xs sm:text-sm rounded-xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 hover:border-indigo-500 transition font-medium text-slate-700 dark:text-slate-300';
+                btn.innerText = opt;
+                btn.onclick = () => selectQuizOption(idx);
+                optionsList.appendChild(btn);
+            });
+            document.getElementById('quizFeedback').classList.add('hidden');
+            document.getElementById('nextQuestionBtn').classList.add('hidden');
+        }
+
+        function selectQuizOption(selectedIdx) {
+            const q = quizData[currentQuestion];
+            const feedback = document.getElementById('quizFeedback');
+            feedback.classList.remove('hidden');
+            
+            const options = document.getElementById('optionsList').children;
+            for(let i=0; i<options.length; i++) {
+                options[i].disabled = true;
+                if(i === q.correct) {
+                    options[i].classList.add('bg-emerald-100', 'dark:bg-emerald-950/50', 'border-emerald-500', 'text-emerald-800', 'dark:text-emerald-200');
+                } else if(i === selectedIdx) {
+                    options[i].classList.add('bg-rose-100', 'dark:bg-rose-950/50', 'border-rose-500', 'text-rose-800', 'dark:text-rose-200');
+                }
+            }
+
+            if(selectedIdx === q.correct) {
+                score += 25;
+                feedback.className = 'p-4 rounded-xl text-xs font-medium bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-900/50';
+                feedback.innerHTML = `<i class="fa-solid fa-circle-check mr-2"></i><strong>¡Correcto!</strong> ${q.explanation}`;
+            } else {
+                feedback.className = 'p-4 rounded-xl text-xs font-medium bg-rose-50 dark:bg-rose-950/30 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-900/50';
+                feedback.innerHTML = `<i class="fa-solid fa-circle-xmark mr-2"></i><strong>Incorrecto.</strong> ${q.explanation}`;
+            }
+
+            document.getElementById('quizScoreTracker').innerText = `Puntuación: ${score}`;
+            if(currentQuestion < quizData.length - 1) {
+                document.getElementById('nextQuestionBtn').classList.remove('hidden');
+            } else {
+                document.getElementById('nextQuestionBtn').innerText = "¡Quiz Finalizado! Reiniciar";
+                document.getElementById('nextQuestionBtn').classList.remove('hidden');
+            }
+        }
+
+        function nextQuizQuestion() {
+            currentQuestion++;
+            if(currentQuestion >= quizData.length) {
+                currentQuestion = 0;
+                score = 0;
+                document.getElementById('nextQuestionBtn').innerText = "Siguiente Pregunta";
+            }
+            loadQuizQuestion();
+        }
+
+        window.onload = () => {
+            loadQuizQuestion();
+        };
+    </script>
+</body>
+</html>
