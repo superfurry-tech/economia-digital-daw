@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Educativa TCP/IP Illustrated - W. Richard Stevens</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#3b82f6',
+                        darkBg: '#0f172a',
+                        cardBg: '#1e293b'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 antialiased selection:bg-blue-500 selection:text-white">
+
+    <!-- Header & Navigation -->
+    <header class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-blue-600 p-2 rounded-lg text-white font-bold tracking-wider text-xl shadow-lg shadow-blue-600/30">
+                    TCP/IP
+                </div>
+                <div>
+                    <span class="block font-bold text-lg text-white leading-tight">Guía Interactiva</span>
+                    <span class="block text-xs text-slate-400">Basado en W. Richard Stevens</span>
+                </div>
+            </div>
+            
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-slate-300">
+                <a href="#modelo" class="hover:text-blue-400 transition-colors">Modelo 4 Capas</a>
+                <a href="#ip" class="hover:text-blue-400 transition-colors">Capas & IP</a>
+                <a href="#arp" class="hover:text-blue-400 transition-colors">ARP y RARP</a>
+                <a href="#icmp" class="hover:text-blue-400 transition-colors">ICMP & Diagnóstico</a>
+                <a href="#transport" class="hover:text-blue-400 transition-colors">UDP & TCP</a>
+                <a href="#faq" class="hover:text-blue-400 transition-colors">Preguntas Frecuentes</a>
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden flex items-center">
+                <button id="mobile-menu-btn" aria-label="Abrir menú" class="p-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 focus:outline-none">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Drawer -->
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-800 border-b border-slate-700 px-4 pt-2 pb-4 space-y-2">
+            <a href="#modelo" class="block py-2 text-slate-300 hover:text-white">Modelo 4 Capas</a>
+            <a href="#ip" class="block py-2 text-slate-300 hover:text-white">Capas & IP</a>
+            <a href="#arp" class="block py-2 text-slate-300 hover:text-white">ARP y RARP</a>
+            <a href="#icmp" class="block py-2 text-slate-300 hover:text-white">ICMP & Diagnóstico</a>
+            <a href="#transport" class="block py-2 text-slate-300 hover:text-white">UDP & TCP</a>
+            <a href="#faq" class="block py-2 text-slate-300 hover:text-white">Preguntas Frecuentes</a>
+        </div>
+    </header>
+
+    <!-- Hero Section with Search -->
+    <section class="relative py-20 overflow-hidden bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 border-b border-slate-800">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-white tracking-tight mb-6">
+                Domina el Suite de Protocolos <span class="text-blue-500">TCP/IP</span>
+            </h1>
+            <p class="text-lg text-slate-300 mb-8 max-w-2xl mx-auto">
+                Explora de forma visual e interactiva los conceptos fundamentales de redes basados en la obra clásica de W. Richard Stevens.
+            </p>
+
+            <!-- Buscador Interactivo -->
+            <div class="relative max-w-xl mx-auto">
+                <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                </span>
+                <input type="text" id="searchInput" placeholder="Busca un concepto (ej. ARP, MTU, Subnet, ICMP, TCP...)" 
+                    class="w-full pl-12 pr-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-xl">
+            </div>
+            <div id="searchResults" class="mt-4 max-w-xl mx-auto text-left space-y-2 hidden"></div>
+        </div>
+    </section>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-24">
+
+        <!-- Sección 1: El Modelo de 4 Capas (Interactivo) -->
+        <section id="modelo" class="scroll-mt-20">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-3xl font-bold text-white mb-4">El Modelo TCP/IP de 4 Capas</h2>
+                <p class="text-slate-400">Haz clic en cada capa para comprender su función específica, encapsulación y los protocolos asociados según la documentación.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- Stack visual -->
+                <div class="lg:col-span-5 space-y-3" id="layerStack">
+                    <div data-layer="app" class="layer-btn cursor-pointer p-4 rounded-xl bg-slate-800 border-2 border-blue-500 shadow-md transition-all hover:bg-slate-700">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-blue-400">Capa 4: Aplicación</span>
+                            <span class="text-xs px-2 py-1 bg-blue-900/50 text-blue-300 rounded">Telnet, FTP, DNS</span>
+                        </div>
+                    </div>
+                    <div data-layer="transport" class="layer-btn cursor-pointer p-4 rounded-xl bg-slate-800 border-2 border-slate-700 shadow-md transition-all hover:bg-slate-700">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-blue-400">Capa 3: Transporte</span>
+                            <span class="text-xs px-2 py-1 bg-slate-700 text-slate-300 rounded">TCP, UDP</span>
+                        </div>
+                    </div>
+                    <div data-layer="network" class="layer-btn cursor-pointer p-4 rounded-xl bg-slate-800 border-2 border-slate-700 shadow-md transition-all hover:bg-slate-700">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-blue-400">Capa 2: Red (Internet)</span>
+                            <span class="text-xs px-2 py-1 bg-slate-700 text-slate-300 rounded">IP, ICMP, IGMP</span>
+                        </div>
+                    </div>
+                    <div data-layer="link" class="layer-btn cursor-pointer p-4 rounded-xl bg-slate-800 border-2 border-slate-700 shadow-md transition-all hover:bg-slate-700">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-blue-400">Capa 1: Enlace (Link)</span>
+                            <span class="text-xs px-2 py-1 bg-slate-700 text-slate-300 rounded">Ethernet, SLIP, PPP</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detalle dinámico de la capa -->
+                <div class="lg:col-span-7 bg-slate-800 border border-slate-700 rounded-2xl p-6 sm:p-8 shadow-2xl">
+                    <div id="layerDetail">
+                        <h3 id="layerTitle" class="text-2xl font-bold text-white mb-3">Capa de Aplicación</h3>
+                        <p id="layerDesc" class="text-slate-300 mb-6 leading-relaxed">
+                            Maneja los detalles de la aplicación de usuario en particular (ej. Telnet, FTP, SMTP, DNS, SNMP). Es un proceso de usuario que interactúa directamente con el usuario o software final, desentendiéndose del movimiento de los datos por la red.
+                        </p>
+                        <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-700">
+                            <h4 class="text-xs font-semibold text-blue-400 uppercase tracking-wider mb-2">Características Clave</h4>
+                            <ul id="layerFeatures" class="list-disc list-inside text-sm text-slate-300 space-y-1">
+                                <li>Normalmente implementado como proceso de usuario.</li>
+                                <li>No conoce detalles de enrutamiento o transporte físico.</li>
+                                <li>Usa protocolos estándar con puertos bien conocidos (Well-known ports).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 2: Protocolos Clave & Encapsulación (Tarjetas Interactivas) -->
+        <section id="ip" class="scroll-mt-20">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-3xl font-bold text-white mb-4">Arquitectura IP, Direccionamiento y Subredes</h2>
+                <p class="text-slate-400">Conceptos esenciales de IP version 4, clases de direcciones y el proceso de encapsulación paso a paso.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Tarjeta 1 -->
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 hover:border-blue-500 transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="bg-blue-900/40 text-blue-400 w-12 h-12 rounded-xl flex items-center justify-center font-bold text-lg mb-4">IP</div>
+                        <h3 class="text-xl font-bold text-white mb-2">Protocolo Internet (IP)</h3>
+                        <p class="text-slate-300 text-sm mb-4">
+                            Proporciona un servicio de entrega de datagramas no confiable (best effort) y sin conexión. Las decisiones se toman salto a salto (hop-by-hop).
+                        </p>
+                    </div>
+                    <div class="text-xs text-slate-400 border-t border-slate-700 pt-4 flex justify-between">
+                        <span>Cabecera base: 20 bytes</span>
+                        <span class="text-blue-400 font-semibold">Versión 4</span>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 2 -->
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 hover:border-blue-500 transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="bg-blue-900/40 text-blue-400 w-12 h-12 rounded-xl flex items-center justify-center font-bold text-lg mb-4">CID</div>
+                        <h3 class="text-xl font-bold text-white mb-2">Clases y Subredes</h3>
+                        <p class="text-slate-300 text-sm mb-4">
+                            Direcciones IP de 32 bits divididas en clases (A, B, C, D, E) y uso de máscaras de subred (Subnet masks) para ocultar detalles internos de organización.
+                        </p>
+                    </div>
+                    <div class="text-xs text-slate-400 border-t border-slate-700 pt-4 flex justify-between">
+                        <span>Notación: Dotted-decimal</span>
+                        <span class="text-blue-400 font-semibold">InterNIC</span>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 3 -->
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 hover:border-blue-500 transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="bg-blue-900/40 text-blue-400 w-12 h-12 rounded-xl flex items-center justify-center font-bold text-lg mb-4">ENC</div>
+                        <h3 class="text-xl font-bold text-white mb-2">Encapsulación</h3>
+                        <p class="text-slate-300 text-sm mb-4">
+                            Cada capa añade su propia cabecera (header) o trailer al descender en la pila. Segmento TCP -> Datagrama IP -> Trama Ethernet.
+                        </p>
+                    </div>
+                    <div class="text-xs text-slate-400 border-t border-slate-700 pt-4 flex justify-between">
+                        <span>Ethernet MTU: 1500 bytes</span>
+                        <span class="text-blue-400 font-semibold">Demultiplexación</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 3: ARP y Resolución de Direcciones -->
+        <section id="arp" class="scroll-mt-20 bg-slate-800/50 border border-slate-800 rounded-3xl p-8 sm:p-12">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <span class="text-blue-400 font-semibold text-sm uppercase tracking-wider">Mapeo Físico y Lógico</span>
+                    <h2 class="text-3xl font-bold text-white mt-2 mb-4">ARP (Address Resolution Protocol) y RARP</h2>
+                    <p class="text-slate-300 mb-6 leading-relaxed">
+                        Las direcciones IP solo tienen sentido a nivel lógico para TCP/IP, mientras que las redes físicas como Ethernet emplean direcciones de hardware de 48 bits. 
+                        <strong>ARP</strong> resuelve dinámicamente una dirección IP en su dirección física correspondiente mediante tramas de difusión (broadcast).
+                    </p>
+                    <ul class="space-y-3 text-sm text-slate-300">
+                        <li class="flex items-start">
+                            <svg class="h-5 w-5 text-blue-500 mr-2 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            <span><strong>Caché ARP:</strong> Mantiene los mapeos recientes por un tiempo de expiración normal de 20 minutos.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="h-5 w-5 text-blue-500 mr-2 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            <span><strong>Proxy ARP:</strong> Permite a un router responder peticiones ARP en una red por un host en otra red (actuando como proxy).</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="h-5 w-5 text-blue-500 mr-2 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            <span><strong>Gratuitous ARP:</strong> Un host busca su propia IP al arrancar para detectar direcciones duplicadas o actualizar cachés de vecinos.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Simulador Visual interactivo de ARP -->
+                <div class="bg-slate-900 border border-slate-700 rounded-2xl p-6 shadow-xl">
+                    <h3 class="text-lg font-bold text-white mb-4">Simulador Rápido: ¿Cómo opera ARP?</h3>
+                    <div class="space-y-4">
+                        <div class="p-3 bg-slate-800 rounded-lg text-sm border border-slate-700">
+                            <span class="text-blue-400 font-semibold">Paso 1:</span> El usuario escribe <code class="bg-slate-900 px-1 py-0.5 rounded text-xs">ftp bsdi</code>. Se resuelve el nombre a IP.
+                        </div>
+                        <div class="p-3 bg-slate-800 rounded-lg text-sm border border-slate-700">
+                            <span class="text-blue-400 font-semibold">Paso 2:</span> El emisor envía un <span class="text-amber-400">ARP Request (Broadcast)</span>: "¿Quién tiene la IP X? Dígaselo a Y".
+                        </div>
+                        <div class="p-3 bg-slate-800 rounded-lg text-sm border border-slate-700">
+                            <span class="text-blue-400 font-semibold">Paso 3:</span> El destino responde con un <span class="text-green-400">ARP Reply (Unicast)</span> con su dirección de hardware MAC.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 4: ICMP, Ping y Traceroute -->
+        <section id="icmp" class="scroll-mt-20">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-3xl font-bold text-white mb-4">ICMP, Protocolo Ping y Traceroute</h2>
+                <p class="text-slate-400">Mensajes de control, errores de puerto inalcanzable, control de tiempo de vida (TTL) y herramientas de diagnóstico clásicas.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Tarjeta ICMP -->
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6">
+                    <h3 class="text-xl font-bold text-white mb-3">ICMP (Internet Control Message Protocol)</h3>
+                    <p class="text-slate-300 text-sm mb-4">
+                        Adjunto indispensable de IP. Se utiliza para comunicar errores (como host o puerto inalcanzable, redirecciones de ruta) y mensajes de consulta (como marcas de tiempo y máscara de subred).
+                    </p>
+                    <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 text-xs text-slate-300 space-y-2">
+                        <div class="flex justify-between"><span>Echo Request / Reply:</span> <span class="text-blue-400">Base del programa Ping</span></div>
+                        <div class="flex justify-between"><span>Port Unreachable:</span> <span class="text-blue-400">Código ICMP por puerto inexistente</span></div>
+                        <div class="flex justify-between"><span>Time Exceeded (TTL=0):</span> <span class="text-blue-400">Base del programa Traceroute</span></div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta Traceroute / TTL -->
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6">
+                    <h3 class="text-xl font-bold text-white mb-3">Traceroute y el campo TTL</h3>
+                    <p class="text-slate-300 text-sm mb-4">
+                        Traceroute opera enviando datagramas UDP con un campo TTL (Time to Live) que se incrementa progresivamente desde 1. Cada router intermedio decrementa el TTL hasta llegar a 0, generando un mensaje ICMP "Time Exceeded".
+                    </p>
+                    <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 text-xs text-slate-300 space-y-2">
+                        <div class="flex justify-between"><span>TTL inicial recomendado:</span> <span class="text-blue-400">64 o 255</span></div>
+                        <div class="flex justify-between"><span>Identificación de ruta:</span> <span class="text-blue-400">Salto a salto (Hop-by-hop)</span></div>
+                        <div class="flex justify-between"><span>Ruteo con fuente:</span> <span class="text-blue-400">Soporta Loose y Strict Source Routing</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 5: Protocolos de Transporte (UDP y TCP) -->
+        <section id="transport" class="scroll-mt-20">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-3xl font-bold text-white mb-4">Capa de Transporte: UDP vs TCP</h2>
+                <p class="text-slate-400">Diferencias clave entre el transporte simple sin conexión y el flujo de datos fiable orientado a conexión.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- UDP Summary -->
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-white">UDP (User Datagram Protocol)</h3>
+                            <span class="bg-blue-900/40 text-blue-400 text-xs px-2 py-1 rounded">Datagramas</span>
+                        </div>
+                        <p class="text-slate-300 text-sm mb-4 leading-relaxed">
+                            Simple, orientado a datagramas. Cada operación de escritura produce exactamente un datagrama UDP. Proporciona puertos y checksum opcional, pero <strong class="text-white">sin garantías de entrega ni orden</strong>.
+                        </p>
+                    </div>
+                    <div class="border-t border-slate-700 pt-4 text-xs text-slate-400 flex justify-between">
+                        <span>Cabecera fija: 8 bytes</span>
+                        <span class="text-blue-400">Usado en DNS, TFTP, SNMP, RIP</span>
+                    </div>
+                </div>
+
+                <!-- TCP Summary -->
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-white">TCP (Transmission Control Protocol)</h3>
+                            <span class="bg-green-900/40 text-green-400 text-xs px-2 py-1 rounded">Flujo Fiable</span>
+                        </div>
+                        <p class="text-slate-300 text-sm mb-4 leading-relaxed">
+                            Orientado a conexión, flujo continuo de bytes fiable con establecimiento de conexión (3-way handshake), retransmisión por temporizadores, control de congestión y ventanas deslizantes (Sliding windows).
+                        </p>
+                    </div>
+                    <div class="border-t border-slate-700 pt-4 text-xs text-slate-400 flex justify-between">
+                        <span>Cabecera base: 20 bytes</span>
+                        <span class="text-green-400">Usado en Telnet, FTP, HTTP, SMTP</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 6: Preguntas Frecuentes (FAQ Interactiva) -->
+        <section id="faq" class="scroll-mt-20">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-3xl font-bold text-white mb-4">Preguntas Frecuentes (FAQ)</h2>
+                <p class="text-slate-400">Respuestas rápidas basadas directamente en los conceptos del documento original de Stevens.</p>
+            </div>
+
+            <div class="max-w-3xl mx-auto space-y-4">
+                <!-- FAQ Item 1 -->
+                <div class="faq-card bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden transition-all">
+                    <button class="faq-btn w-full p-6 text-left flex justify-between items-center focus:outline-none">
+                        <span class="font-bold text-white">¿Cuál es la diferencia principal entre el nivel de red (IP) y el de transporte (TCP/UDP)?</span>
+                        <svg class="h-5 w-5 text-slate-400 transform transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-6 text-sm text-slate-300 leading-relaxed border-t border-slate-700 pt-4">
+                        El nivel de red (IP) proporciona un servicio no confiable de entrega salto a salto (hop-by-hop) en todo un interconectado de redes. En cambio, el nivel de transporte (TCP o UDP) proporciona servicios de extremo a extremo (end-to-end) entre los procesos de las aplicaciones.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="faq-card bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden transition-all">
+                    <button class="faq-btn w-full p-6 text-left flex justify-between items-center focus:outline-none">
+                        <span class="font-bold text-white">¿Qué es el MTU (Maximum Transmission Unit) y por qué importa la fragmentación?</span>
+                        <svg class="h-5 w-5 text-slate-400 transform transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-6 text-sm text-slate-300 leading-relaxed border-t border-slate-700 pt-4">
+                        El MTU es el límite superior de tamaño de trama que puede transmitir una red física (por ejemplo, 1500 bytes en Ethernet). Si un datagrama IP supera este tamaño, se fragmenta en piezas más pequeñas. Sin embargo, si un solo fragmento se pierde, todo el datagrama IP original debe retransmitirse, lo cual puede degradar el rendimiento.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="faq-card bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden transition-all">
+                    <button class="faq-btn w-full p-6 text-left flex justify-between items-center focus:outline-none">
+                        <span class="font-bold text-white">¿Cómo funcionan los puertos efímeros frente a los puertos conocidos?</span>
+                        <svg class="h-5 w-5 text-slate-400 transform transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-6 text-sm text-slate-300 leading-relaxed border-t border-slate-700 pt-4">
+                        Los servidores utilizan puertos bien conocidos (Well-known ports, entre 1 y 1023 administrados por la IANA) para que los clientes sepan dónde encontrarlos (ej. Telnet en 23, FTP en 21). Los clientes utilizan puertos efímeros de corta duración (típicamente entre 1024 y 5000 o superiores) asignados dinámicamente por el sistema operativo de forma única en su host.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="faq-card bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden transition-all">
+                    <button class="faq-btn w-full p-6 text-left flex justify-between items-center focus:outline-none">
+                        <span class="font-bold text-white">¿Qué diferencia hay entre enrutamiento estático y dinámico (como RIP u OSPF)?</span>
+                        <svg class="h-5 w-5 text-slate-400 transform transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-6 text-sm text-slate-300 leading-relaxed border-t border-slate-700 pt-4">
+                        El enrutamiento estático se configura manualmente mediante comandos de ruta en el arranque o redirecciones ICMP. El enrutamiento dinámico utiliza daemons que ejecutan protocolos (como RIP o OSPF) para que los routers intercambien información de conectividad y actualicen automáticamente las tablas del kernel ante cambios topológicos o fallos de enlaces.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 border-t border-slate-800 py-12 mt-24 text-center text-slate-400 text-sm">
+        <div class="max-w-7xl mx-auto px-4 space-y-4">
+            <p>Guía Educativa basada íntegramente en la obra <strong>"TCP/IP Illustrated, Volume 1: The Protocols"</strong> de W. Richard Stevens.</p>
+            <p class="text-xs text-slate-500">Diseñado para desarrolladores, administradores de sistemas y estudiantes de redes en español.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Interactivo -->
+    <script>
+        // Menu móvil toggle
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Interfaz interactiva de Capas TCP/IP
+        const layerData = {
+            app: {
+                title: "Capa de Aplicación",
+                desc: "Maneja los detalles de la aplicación en particular (Telnet, FTP, SMTP, DNS, SNMP). Es un proceso de usuario que interactúa con la red de forma transparente a los detalles de comunicación física.",
+                features: [
+                    "Normalmente implementado como proceso de usuario.",
+                    "No conoce detalles de enrutamiento ni transporte físico.",
+                    "Usa protocolos estándar con puertos bien conocidos."
+                ]
+            },
+            transport: {
+                title: "Capa de Transporte",
+                desc: "Proporciona un flujo de datos entre dos hosts de extremo a extremo (end-to-end). Los dos protocolos principales son TCP (fiable, orientado a conexión) y UDP (simple, datagramas no confiables).",
+                features: [
+                    "TCP divide datos, gestiona acuses de recibo y retransmisiones.",
+                    "UDP envía datagramas simples sin garantías de entrega.",
+                    "Utiliza números de puerto de 16 bits para identificar aplicaciones."
+                ]
+            },
+            network: {
+                title: "Capa de Red (Internet)",
+                desc: "Maneja el movimiento de paquetes alrededor de la red (enrutamiento salto a salto). Incluye IP (Internet Protocol), ICMP (mensajes de control y error) e IGMP (gestión de grupos multicast).",
+                features: [
+                    "IP proporciona un servicio no confiable de mejor esfuerzo (best effort).",
+                    "ICMP reporta errores como puertos o destinos inalcanzables.",
+                    "Utiliza direcciones IP de 32 bits y máscaras de subred."
+                ]
+            },
+            link: {
+                title: "Capa de Enlace (Link Layer)",
+                desc: "Incluye el controlador del dispositivo (device driver) en el sistema operativo y la tarjeta de interfaz de red correspondiente. Maneja todos los detalles físicos de la interfaz con el medio (Ethernet, SLIP, PPP).",
+                features: [
+                    "Usa direcciones físicas de hardware (ej. MAC de 48 bits en Ethernet).",
+                    "Define el MTU (Maximum Transmission Unit) de la red física.",
+                    "Soporta interfaces de bucle local (Loopback 127.0.0.1)."
+                ]
+            }
+        };
+
+        const layerButtons = document.querySelectorAll('.layer-btn');
+        const layerTitle = document.getElementById('layerTitle');
+        const layerDesc = document.getElementById('layerDesc');
+        const layerFeatures = document.getElementById('layerFeatures');
+
+        layerButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Estilos activos
+                layerButtons.forEach(b => {
+                    b.classList.remove('border-blue-500', 'bg-slate-700/50');
+                    b.classList.add('border-slate-700');
+                });
+                btn.classList.remove('border-slate-700');
+                btn.classList.add('border-blue-500', 'bg-slate-700/50');
+
+                const layerKey = btn.getAttribute('data-layer');
+                const data = layerData[layerKey];
+                
+                layerTitle.textContent = data.title;
+                layerDesc.textContent = data.desc;
+                
+                layerFeatures.innerHTML = '';
+                data.features.forEach(feat => {
+                    const li = document.createElement('li');
+                    li.textContent = feat;
+                    layerFeatures.appendChild(li);
+                });
+            });
+        });
+
+        // FAQ Acordeón interactivo
+        const faqCards = document.querySelectorAll('.faq-card');
+        faqCards.forEach(card => {
+            const btn = card.querySelector('.faq-btn');
+            const content = card.querySelector('.faq-content');
+            const icon = btn.querySelector('svg');
+
+            btn.addEventListener('click', () => {
+                const isOpen = !content.classList.contains('hidden');
+                
+                // Cerrar todos
+                faqCards.forEach(c => {
+                    c.querySelector('.faq-content').classList.add('hidden');
+                    c.querySelector('svg').classList.remove('rotate-180');
+                });
+
+                if (!isOpen) {
+                    content.classList.remove('hidden');
+                    icon.classList.add('rotate-180');
+                }
+            });
+        });
+
+        // Buscador interactivo en tiempo real
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+
+        const searchableTopics = [
+            { title: "ARP (Address Resolution Protocol)", desc: "Mapea direcciones IP de 32 bits a direcciones de hardware de 48 bits en redes de difusión como Ethernet.", anchor: "#arp" },
+            { title: "RARP (Reverse Address Resolution Protocol)", desc: "Permite a sistemas sin disco obtener su dirección IP a partir de su dirección de hardware.", anchor: "#arp" },
+            { title: "MTU (Maximum Transmission Unit)", desc: "Límite superior de tamaño de trama que el enlace de red puede transmitir (ej. 1500 bytes en Ethernet).", anchor: "#ip" },
+            { title: "ICMP (Internet Control Message Protocol)", desc: "Protocolo de mensajes de control y error de IP. Base para Ping y Traceroute.", anchor: "#icmp" },
+            { title: "UDP (User Datagram Protocol)", desc: "Transporte simple sin conexión orientado a datagramas, sin garantías de entrega.", anchor: "#transport" },
+            { title: "TCP (Transmission Control Protocol)", desc: "Transporte fiable orientado a conexión con control de flujo, congestión y acuses de recibo.", anchor: "#transport" },
+            { title: "Subnet Mask (Máscara de subred)", desc: "Máscara de 32 bits usada para separar el ID de red/subred del ID de host.", anchor: "#ip" },
+            { title: "Traceroute y TTL", desc: "Herramienta que traza la ruta usando paquetes UDP con TTL incremental y respuestas ICMP Time Exceeded.", anchor: "#icmp" },
+            { title: "Enrutamiento Estático y Dinámico (RIP / OSPF)", desc: "Mecanismos para poblar y mantener tablas de rutas en hosts y routers.", anchor: "#modelo" }
+        ];
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            searchResults.innerHTML = '';
+
+            if (query.length === 0) {
+                searchResults.classList.add('hidden');
+                return;
+            }
+
+            const matches = searchableTopics.filter(item => 
+                item.title.toLowerCase().includes(query) || item.desc.toLowerCase().includes(query)
+            );
+
+            if (matches.length > 0) {
+                searchResults.classList.remove('hidden');
+                matches.forEach(match => {
+                    const div = document.createElement('div');
+                    div.className = 'p-3 bg-slate-800 border border-slate-700 rounded-lg cursor-pointer hover:bg-slate-700 transition-colors';
+                    div.innerHTML = `<h4 class="font-bold text-white text-sm">${match.title}</h4><p class="text-xs text-slate-300">${match.desc}</p>`;
+                    div.addEventListener('click', () => {
+                        window.location.href = match.anchor;
+                        searchResults.classList.add('hidden');
+                        searchInput.value = '';
+                    });
+                    searchResults.appendChild(div);
+                });
+            } else {
+                searchResults.classList.remove('hidden');
+                const div = document.createElement('div');
+                div.className = 'p-3 bg-slate-800 border border-slate-700 rounded-lg text-slate-400 text-sm';
+                div.textContent = 'No se encontraron conceptos coincidentes en el documento.';
+                searchResults.appendChild(div);
+            }
+        });
+    </script>
+</body>
+</html>
